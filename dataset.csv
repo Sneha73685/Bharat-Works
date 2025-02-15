@@ -1,0 +1,49 @@
+import pandas as pd
+import numpy as np
+import random
+from faker import Faker
+
+fake = Faker()
+
+# Define possible freelancer skills
+skills_list = [
+    "Python", "Machine Learning", "Data Science", "Web Development", "Java",
+    "React", "Flutter", "UI/UX Design", "SEO", "Digital Marketing", "DevOps",
+    "Cybersecurity", "Blockchain", "Mobile App Development", "Content Writing"
+]
+
+# Cities for location-based recommendations
+cities = ["Delhi", "Mumbai", "Bangalore", "Chennai", "Kolkata", "Pune", "Hyderabad", "Ahmedabad"]
+
+# Generate 100 freelancers
+num_freelancers = 100
+data = []
+
+for i in range(1, num_freelancers + 1):
+    freelancer_id = i
+    skills = ", ".join(random.sample(skills_list, random.randint(2, 5)))  # Select 2-5 random skills
+    experience = random.randint(1, 10)  # 1 to 10 years
+    ratings = round(random.uniform(3.5, 5.0), 1)  # Rating between 3.5 and 5.0
+    job_success = random.randint(70, 100)  # 70% to 100% success rate
+    price_per_hour = random.randint(500, 5000)  # Hourly rate between ₹500 to ₹5000
+    location = random.choice(cities)  # Random city
+    completed_projects = random.randint(10, 200)  # 10 to 200 past projects
+
+    # Label as 'Best Freelancer' if experience > 5 years and success rate > 90%
+    best_freelancer = 1 if (experience > 5 and job_success > 90 and ratings > 4.5) else 0
+
+    data.append([
+        freelancer_id, skills, experience, ratings, job_success,
+        price_per_hour, location, completed_projects, best_freelancer
+    ])
+
+# Create a DataFrame
+df = pd.DataFrame(data, columns=[
+    "Freelancer_ID", "Skills", "Experience", "Ratings", "Job_Success",
+    "Price_per_Hour", "Location", "Completed_Projects", "Best_Freelancer"
+])
+
+# Save to CSV
+df.to_csv("freelancer_data.csv", index=False)
+
+print("✅ Freelancer dataset created and saved as 'freelancer_data.csv'!")
